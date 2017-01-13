@@ -25,7 +25,7 @@ typedef struct DLNode{
 void initLNode(int *arr, int n, LNode *&ln);
 void mergeNode(LNode *&ln1, LNode *&ln2, LNode *&output);
 void mergeNodeWithOrder(LNode *&ln1, LNode *&ln2, LNode *&output);
-void insertNode(LNode *&ln, int data);
+void insertNode(LNode *&ln, int data, int index);
 void deleteNode(LNode *&ln, int index);
 void displayLNodeData(LNode *&ln);
 
@@ -41,7 +41,7 @@ int main(int argc, const char * argv[]) {
     initLNode(forMergeArray, 5, forMergeln);
     mergeNode(ln, forMergeln, mergeln);
     mergeNodeWithOrder(ln, forMergeln, mergelnWithOrder);
-    insertNode(ln, 11);
+    insertNode(ln, 11, 2);
     deleteNode(ln, 3);
     displayLNodeData(ln);
     return 0;
@@ -122,15 +122,17 @@ void mergeNodeWithOrder(LNode *&ln1, LNode *&ln2, LNode *&output) {
     }
 }
 
-void insertNode(LNode *&ln, int data) {
+void insertNode(LNode *&ln, int data, int index) {
     LNode *p = ln;
     
-    while(p->next != NULL) {
+    while(p->next != NULL && index > 0) {
         p = p->next;
+        index --;
     }
     
     LNode *t = (LNode*)malloc(sizeof(LNode));
     t->data = data;
+    t->next = p->next;
     p->next = t;
 }
 
