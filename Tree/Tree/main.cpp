@@ -14,7 +14,7 @@ using namespace std;
 
 typedef struct BTNode {
     char data;
-    
+    int key;
     BTNode *lchild;
     BTNode *rchild;
 } BTNode;
@@ -31,16 +31,20 @@ typedef struct TBTNode {
 
 void initTree(BTNode *&tree);
 void initFullTree(BTNode *&tree);
+void initSortedTree(BTNode *&tree); // 二叉排序樹(左子<父<右子)
 void preOrder(BTNode *&tree);
 void inOrder(BTNode *&tree);
 void postOrder(BTNode *&tree);
 void levelOrder(BTNode *&tree);
 bool isCompleteTree(BTNode *&tree);
 int getTreeDepth(BTNode *&tree);
+int insertBSTTreeNode(BTNode *&tree, int node);
+
+
 
 int main(int argc, const char * argv[]) {
     BTNode *tree;
-    initFullTree(tree);
+    initSortedTree(tree);
     cout<<"先序走訪: ";
     preOrder(tree);
     cout<<endl;
@@ -122,6 +126,14 @@ void initFullTree(BTNode *&tree) {
     p->rchild->rchild->lchild = NULL;
 }
 
+void initSortedTree(BTNode *&tree) {
+    tree = NULL;
+    int arr[8] = {3, 4, 5, 6, 7, 8, 9, 10};
+    for(int i = 0;i<8;i++) {
+        insertBSTTreeNode(tree, arr[i]);
+    }
+}
+
 void preOrder(BTNode *&tree) {
     //先序走訪
     if(tree!=NULL) {
@@ -134,7 +146,7 @@ void inOrder(BTNode *&tree) {
     //中序走訪
     if(tree!=NULL) {
         inOrder(tree->lchild);
-        cout<<tree->data<<setw(3);
+        cout<<tree->key<<setw(3);
         inOrder(tree->rchild);
     }
 }
@@ -221,4 +233,24 @@ int getTreeDepth(BTNode *&tree) {
     RD = getTreeDepth(p->rchild);
     
     return (LD > RD ? LD : RD) + 1;
+}
+
+int insertBSTTreeNode(BTNode *&tree, int node) {
+    if(tree == NULL) {
+        tree = (BTNode*)malloc(sizeof(BTNode));
+        tree->key = node;
+        tree->lchild = NULL;
+        tree->rchild = NULL;
+        return 1;
+    }
+    
+    if(node == tree->key) {
+        return 0;
+    } else if(node < tree->key){
+        return insertBSTTreeNode(tree->lchild, node);
+    } else {
+        return insertBSTTreeNode(tree->rchild, node);
+
+    }
+    
 }
